@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Organização Financeira</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- ══════════════ TOP BAR ══════════════ -->
+    <div class="topbar">
+      <div class="tb-brand">💰 Organização Financeira <em id="brand-year"></em></div>
+      <div class="tb-right">
+        <div class="year-nav">
+          <button class="tb-btn year-btn" onclick="changeYear(-1)" title="Ano anterior">‹</button>
+          <span class="tb-year" id="tb-year"></span>
+          <button class="tb-btn year-btn" onclick="changeYear(1)"  title="Próximo ano">›</button>
+        </div>
+        <span class="tb-date" id="tb-date"></span>
+        <button class="tb-btn" onclick="editName()">✏️ <span id="tb-name"></span></button>
+        <button class="tb-btn" onclick="exportData()" title="Exportar dados como JSON">📥 Exportar</button>
+        <label class="tb-btn" style="cursor:pointer" title="Importar backup JSON">
+          📤 Importar
+          <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+        </label>
+        <button class="tb-btn danger" onclick="confirmReset()">🗑 Limpar</button>
+      </div>
+    </div>
+
+    <!-- ══════════════ MONTH TABS ══════════════ -->
+    <div class="mtabs" id="mtabs"></div>
+
+    <div class="main">
+
+      <!-- ══════════════ ROW 1: GREETING + CARDS ══════════════ -->
+      <div class="row-top">
+        <div class="greeting">
+          <div>
+            <div class="g-icon">👋</div>
+            <div class="g-small" id="g-date-small"></div>
+            <div class="g-name">Olá, <span id="g-name"></span>!</div>
+            <div class="g-sub">Pequenas ações geram grandes resultados.</div>
+          </div>
+          <div class="g-month" id="g-month"></div>
+        </div>
+        <div class="sc-grid" id="sc-grid"></div>
+      </div>
+
+      <!-- ══════════════ ROW 2: VISÃO ANUAL ══════════════ -->
+      <div class="row-annual">
+        <div class="card annual-card">
+          <div class="card-title">📅 Visão Anual — <span id="annual-year"></span></div>
+          <div class="annual-scroll">
+            <div id="annual-table"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">📈 Evolução Mensal</div>
+          <div class="chart-wrap trend-wrap"><canvas id="trendChart"></canvas></div>
+          <div class="chart-legend">
+            <span class="cl-item"><span class="cl-dot" style="background:var(--green)"></span>Entradas</span>
+            <span class="cl-item"><span class="cl-dot" style="background:var(--red)"></span>Gastos</span>
+            <span class="cl-item"><span class="cl-dot" style="background:var(--t4)"></span>Reservas</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════ ROW 3: METAS + GRÁFICOS ══════════════ -->
+      <div class="row-mid">
+        <div class="card" id="goals-card">
+          <div class="card-title">🎯 Reservas & Metas</div>
+          <div id="goals-inner"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">💳 Restante para gastar</div>
+          <div class="donut-wrap">
+            <canvas id="donutChart" width="195" height="195"></canvas>
+            <div class="donut-center">
+              <div class="dc-label">disponível</div>
+              <div class="dc-val" id="donut-val">R$ 0,00</div>
+            </div>
+          </div>
+          <div class="chart-legend">
+            <span class="cl-item"><span class="cl-dot" style="background:var(--t7)"></span>Gasto + Reservado</span>
+            <span class="cl-item"><span class="cl-dot" style="background:var(--g3)"></span>Disponível</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">📊 Fluxo de contas</div>
+          <div class="chart-wrap"><canvas id="fluxoChart"></canvas></div>
+          <div class="chart-legend">
+            <span class="cl-item"><span class="cl-sq" style="background:var(--t7)"></span>Planejado</span>
+            <span class="cl-item"><span class="cl-sq" style="background:var(--t3)"></span>Real</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">🛒 Alocação por categoria</div>
+          <div class="chart-wrap"><canvas id="allocChart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- ══════════════ ROW 4: TABELAS ══════════════ -->
+      <div class="row-tables">
+        <div class="tc">
+          <div class="tc-header">⬆️ Entradas</div>
+          <div class="tc-sub" style="grid-template-columns:1.8fr 1fr 0.8fr 18px">
+            <span>Nome</span><span>Valor</span><span>%</span><span></span>
+          </div>
+          <div class="tc-body" id="t-entradas"></div>
+          <div class="tc-total"><span>Total</span><span id="tot-ent">R$ 0,00</span></div>
+          <button class="add-btn" onclick="openModal('entrada')">＋ Adicionar entrada</button>
+        </div>
+
+        <div class="tc">
+          <div class="tc-header">⬇️ Gastos</div>
+          <div class="tc-sub" style="grid-template-columns:1.1fr 0.95fr 0.9fr 0.85fr 22px 18px">
+            <span>Categoria</span><span>Forma</span><span>Valor</span><span>Data</span><span>Ess.</span><span></span>
+          </div>
+          <div class="tc-body" id="t-gastos"></div>
+          <div class="tc-total"><span>Total</span><span id="tot-gas">R$ 0,00</span></div>
+          <button class="add-btn" onclick="openModal('gasto')">＋ Adicionar gasto</button>
+        </div>
+
+        <div class="tc">
+          <div class="tc-header">🧾 Contas</div>
+          <div class="tc-sub" style="grid-template-columns:1.1fr 0.9fr 0.9fr 0.9fr 18px">
+            <span>Nome</span><span>Planejado</span><span>Valor</span><span>Data/Status</span><span></span>
+          </div>
+          <div class="tc-body" id="t-contas"></div>
+          <div class="tc-total"><span>Total pago</span><span id="tot-con">R$ 0,00</span></div>
+          <button class="add-btn" onclick="openModal('conta')">＋ Adicionar conta</button>
+        </div>
+
+        <div class="tc">
+          <div class="tc-header">📈 Reservas & Investimentos</div>
+          <div class="tc-sub" style="grid-template-columns:1.1fr 0.9fr 0.9fr 0.85fr 18px">
+            <span>Nome</span><span>Tipo</span><span>Valor</span><span>Data</span><span></span>
+          </div>
+          <div class="tc-body" id="t-reservas"></div>
+          <div class="tc-total"><span>Total</span><span id="tot-res">R$ 0,00</span></div>
+          <button class="add-btn" onclick="openModal('reserva')">＋ Adicionar reserva</button>
+        </div>
+      </div>
+
+    </div><!-- /.main -->
+
+    <!-- ══════════════ MODAL ══════════════ -->
+    <div class="overlay" id="overlay" onclick="overlayClick(event)">
+      <div class="modal">
+        <div class="modal-title" id="modal-title">—</div>
+        <div class="mform" id="modal-form"></div>
+        <div class="mactions">
+          <button class="btn-c" onclick="closeModal()">Cancelar</button>
+          <button class="btn-s" onclick="saveModal()">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
