@@ -115,10 +115,11 @@ const D = () => STATE.data[STATE.month];
 // ═══════════════════════════════════════════════════════
 //  MATH
 // ═══════════════════════════════════════════════════════
-const fmt = v => (v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const fmt = v => 'Kz\u00a0' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const fmtShort = v => {
   const abs = Math.abs(v || 0);
-  if (abs >= 1000) return (v < 0 ? '-' : '') + 'R$' + (abs / 1000).toFixed(1) + 'k';
+  if (abs >= 1000000) return (v < 0 ? '-' : '') + 'Kz\u00a0' + (abs / 1000000).toFixed(1) + 'M';
+  if (abs >= 1000)    return (v < 0 ? '-' : '') + 'Kz\u00a0' + (abs / 1000).toFixed(1) + 'k';
   return fmt(v);
 };
 
@@ -181,10 +182,11 @@ function activateTab(i) {
 }
 
 function updateYearDisplay() {
-  document.getElementById('tb-year').textContent   = STATE.year;
+  document.getElementById('tb-year').textContent    = STATE.year;
   document.getElementById('brand-year').textContent = STATE.year;
-  document.getElementById('annual-year').textContent = STATE.year;
-  document.title = `Organização Financeira ${STATE.year}`;
+  document.getElementById('annual-year').textContent  = STATE.year;
+  document.getElementById('annual-year-2').textContent = STATE.year;
+  document.title = `Gestão Financeira ${STATE.year}`;
 }
 
 function updateNameDisplay() {

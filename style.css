@@ -64,10 +64,72 @@ body{font-family:'DM Sans',sans-serif;background:#edf3f3;color:var(--g9);min-hei
 .sc-prev{font-size:10px;color:var(--g5);margin-top:4px}
 .sc-alert{font-size:10px;color:var(--red);margin-top:4px;line-height:1.4}
 
+/* ─── HERO SECTION (foco mensal) ─────────────────── */
+.hero-section{
+  background:linear-gradient(140deg,var(--t0) 0%,#f8fffe 60%,#fff 100%);
+  border:1.5px solid var(--t2);
+  border-radius:20px;
+  padding:18px;
+  margin-bottom:14px;
+  box-shadow:var(--s2);
+}
+.hero-label{
+  font-family:'Playfair Display',serif;
+  font-size:15px;font-weight:700;color:var(--t9);
+  margin-bottom:14px;padding-left:2px;
+  display:flex;align-items:center;gap:8px;
+}
+.hero-label::after{
+  content:'';flex:1;height:1px;background:var(--t2);
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:230px 280px 1fr 1fr;
+  gap:12px;
+}
+.hero-card-highlight{
+  background:linear-gradient(145deg,var(--t9),var(--t7)) !important;
+  color:#fff;
+}
+.hero-card-highlight .card-title{background:rgba(255,255,255,.12) !important;color:#fff}
+.hero-card-highlight .dc-label{color:rgba(255,255,255,.6) !important}
+.hero-card-highlight .dc-val{color:#fff !important}
+.hero-card-highlight .cl-item{color:rgba(255,255,255,.7)}
+
+.donut-wrap-lg{height:220px !important}
+.chart-wrap-lg{height:220px !important}
+
 /* ─── ROW ANNUAL ──────────────────────────────────── */
-.row-annual{display:grid;grid-template-columns:320px 1fr;gap:14px;margin-bottom:14px}
+.row-annual{display:grid;grid-template-columns:320px 1fr;gap:14px}
 .annual-card{padding:14px 16px !important}
 .annual-scroll{overflow-x:auto}
+
+/* ─── ANNUAL DETAILS (colapsável) ────────────────── */
+.annual-details{margin-top:14px;border-radius:14px;overflow:hidden}
+.annual-summary{
+  display:flex;align-items:center;gap:8px;
+  cursor:pointer;list-style:none;
+  background:var(--g1);
+  border:1.5px solid var(--g3);
+  border-radius:12px;
+  padding:11px 18px;
+  font-size:12px;font-weight:600;color:var(--g5);
+  user-select:none;transition:all .2s;
+}
+.annual-summary::-webkit-details-marker{display:none}
+.annual-summary:hover{background:var(--t1);color:var(--t8);border-color:var(--t2)}
+.annual-details[open] .annual-summary{
+  border-radius:12px 12px 0 0;
+  background:var(--t1);color:var(--t8);border-color:var(--t2);
+}
+.annual-toggle-hint{margin-left:auto;font-size:10px;opacity:.6;font-weight:400}
+.annual-details[open] .annual-toggle-hint::before{content:'clique para fechar'}
+.annual-toggle-hint::before{content:'clique para expandir'}
+.annual-body{
+  border:1.5px solid var(--t2);border-top:none;
+  border-radius:0 0 12px 12px;
+  padding:16px;background:var(--w);
+}
 
 .annual-header,.annual-row,.annual-total{
   display:grid;
@@ -99,8 +161,6 @@ body{font-family:'DM Sans',sans-serif;background:#edf3f3;color:var(--g9);min-hei
 
 .trend-wrap{height:220px !important}
 
-/* ─── ROW MID ─────────────────────────────────────── */
-.row-mid{display:grid;grid-template-columns:290px 1fr 1fr 1fr;gap:14px;margin-bottom:14px}
 .card{background:var(--w);border-radius:16px;padding:16px;box-shadow:var(--s1)}
 .card-title{font-size:11px;font-weight:700;color:#fff;background:var(--t8);padding:7px 12px;border-radius:8px;text-align:center;margin-bottom:12px;letter-spacing:.3px}
 
@@ -219,23 +279,24 @@ body{font-family:'DM Sans',sans-serif;background:#edf3f3;color:var(--g9);min-hei
 /* ─── RESPONSIVE ─────────────────────────────────── */
 @media(max-width:1400px){
   .sc-grid{grid-template-columns:repeat(3,1fr)}
-  .row-annual{grid-template-columns:300px 1fr}
-  .row-mid{grid-template-columns:260px 1fr 1fr}
+  .hero-grid{grid-template-columns:220px 260px 1fr}
+  .hero-grid .card:last-child{grid-column:1/-1}
+  .row-annual{grid-template-columns:280px 1fr}
   .row-tables{grid-template-columns:1fr 1fr}
 }
-@media(max-width:1024px){
-  .row-top{grid-template-columns:240px 1fr}
+@media(max-width:1100px){
+  .hero-grid{grid-template-columns:1fr 1fr}
   .row-annual{grid-template-columns:1fr}
-  .row-mid{grid-template-columns:240px 1fr 1fr}
   .row-tables{grid-template-columns:1fr 1fr}
 }
 @media(max-width:780px){
   .main{padding:10px}
-  .row-top,.row-mid,.row-tables{grid-template-columns:1fr}
-  .row-annual{grid-template-columns:1fr}
+  .row-top,.row-tables{grid-template-columns:1fr}
+  .hero-grid{grid-template-columns:1fr}
   .sc-grid{grid-template-columns:1fr 1fr}
   .tb-right{gap:5px}
   .tb-date{display:none}
+  .donut-wrap-lg,.chart-wrap-lg{height:180px !important}
 }
 @media(max-width:480px){
   .sc-grid{grid-template-columns:1fr 1fr}

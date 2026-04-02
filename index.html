@@ -12,9 +12,10 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+
     <!-- ══════════════ TOP BAR ══════════════ -->
     <div class="topbar">
-      <div class="tb-brand">💰 Organização Financeira <em id="brand-year"></em></div>
+      <div class="tb-brand">💰 Gestão Financeira <em id="brand-year"></em></div>
       <div class="tb-right">
         <div class="year-nav">
           <button class="tb-btn year-btn" onclick="changeYear(-1)" title="Ano anterior">‹</button>
@@ -37,7 +38,7 @@
 
     <div class="main">
 
-      <!-- ══════════════ ROW 1: GREETING + CARDS ══════════════ -->
+      <!-- ══════════════ ROW 1: SAUDAÇÃO + CARDS RESUMO ══════════════ -->
       <div class="row-top">
         <div class="greeting">
           <div>
@@ -51,60 +52,54 @@
         <div class="sc-grid" id="sc-grid"></div>
       </div>
 
-      <!-- ══════════════ ROW 2: VISÃO ANUAL ══════════════ -->
-      <div class="row-annual">
-        <div class="card annual-card">
-          <div class="card-title">📅 Visão Anual — <span id="annual-year"></span></div>
-          <div class="annual-scroll">
-            <div id="annual-table"></div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title">📈 Evolução Mensal</div>
-          <div class="chart-wrap trend-wrap"><canvas id="trendChart"></canvas></div>
-          <div class="chart-legend">
-            <span class="cl-item"><span class="cl-dot" style="background:var(--green)"></span>Entradas</span>
-            <span class="cl-item"><span class="cl-dot" style="background:var(--red)"></span>Gastos</span>
-            <span class="cl-item"><span class="cl-dot" style="background:var(--t4)"></span>Reservas</span>
-          </div>
-        </div>
-      </div>
+      <!-- ══════════════ FOCO MENSAL (SECÇÃO PRINCIPAL) ══════════════ -->
+      <div class="hero-section">
+        <div class="hero-label">💰 Painel Financeiro do Mês</div>
 
-      <!-- ══════════════ ROW 3: METAS + GRÁFICOS ══════════════ -->
-      <div class="row-mid">
-        <div class="card" id="goals-card">
-          <div class="card-title">🎯 Reservas & Metas</div>
-          <div id="goals-inner"></div>
-        </div>
-        <div class="card">
-          <div class="card-title">💳 Restante para gastar</div>
-          <div class="donut-wrap">
-            <canvas id="donutChart" width="195" height="195"></canvas>
-            <div class="donut-center">
-              <div class="dc-label">disponível</div>
-              <div class="dc-val" id="donut-val">R$ 0,00</div>
+        <div class="hero-grid">
+
+          <!-- Coluna 1: Disponível (Donut) -->
+          <div class="card hero-card-highlight">
+            <div class="card-title">💳 Disponível para gastar</div>
+            <div class="donut-wrap donut-wrap-lg">
+              <canvas id="donutChart"></canvas>
+              <div class="donut-center">
+                <div class="dc-label">disponível</div>
+                <div class="dc-val" id="donut-val">Kz 0,00</div>
+              </div>
+            </div>
+            <div class="chart-legend">
+              <span class="cl-item"><span class="cl-dot" style="background:var(--t7)"></span>Gasto + Reservado</span>
+              <span class="cl-item"><span class="cl-dot" style="background:var(--g3)"></span>Disponível</span>
             </div>
           </div>
-          <div class="chart-legend">
-            <span class="cl-item"><span class="cl-dot" style="background:var(--t7)"></span>Gasto + Reservado</span>
-            <span class="cl-item"><span class="cl-dot" style="background:var(--g3)"></span>Disponível</span>
+
+          <!-- Coluna 2: Metas & Reservas -->
+          <div class="card" id="goals-card">
+            <div class="card-title">🎯 Reservas & Metas</div>
+            <div id="goals-inner"></div>
           </div>
-        </div>
-        <div class="card">
-          <div class="card-title">📊 Fluxo de contas</div>
-          <div class="chart-wrap"><canvas id="fluxoChart"></canvas></div>
-          <div class="chart-legend">
-            <span class="cl-item"><span class="cl-sq" style="background:var(--t7)"></span>Planejado</span>
-            <span class="cl-item"><span class="cl-sq" style="background:var(--t3)"></span>Real</span>
+
+          <!-- Coluna 3: Fluxo de contas -->
+          <div class="card">
+            <div class="card-title">📊 Fluxo de contas</div>
+            <div class="chart-wrap chart-wrap-lg"><canvas id="fluxoChart"></canvas></div>
+            <div class="chart-legend">
+              <span class="cl-item"><span class="cl-sq" style="background:var(--t7)"></span>Planejado</span>
+              <span class="cl-item"><span class="cl-sq" style="background:var(--t3)"></span>Real</span>
+            </div>
           </div>
-        </div>
-        <div class="card">
-          <div class="card-title">🛒 Alocação por categoria</div>
-          <div class="chart-wrap"><canvas id="allocChart"></canvas></div>
+
+          <!-- Coluna 4: Alocação por categoria -->
+          <div class="card">
+            <div class="card-title">🛒 Gastos por categoria</div>
+            <div class="chart-wrap chart-wrap-lg"><canvas id="allocChart"></canvas></div>
+          </div>
+
         </div>
       </div>
 
-      <!-- ══════════════ ROW 4: TABELAS ══════════════ -->
+      <!-- ══════════════ TABELAS DETALHADAS ══════════════ -->
       <div class="row-tables">
         <div class="tc">
           <div class="tc-header">⬆️ Entradas</div>
@@ -112,7 +107,7 @@
             <span>Nome</span><span>Valor</span><span>%</span><span></span>
           </div>
           <div class="tc-body" id="t-entradas"></div>
-          <div class="tc-total"><span>Total</span><span id="tot-ent">R$ 0,00</span></div>
+          <div class="tc-total"><span>Total</span><span id="tot-ent">Kz 0,00</span></div>
           <button class="add-btn" onclick="openModal('entrada')">＋ Adicionar entrada</button>
         </div>
 
@@ -122,7 +117,7 @@
             <span>Categoria</span><span>Forma</span><span>Valor</span><span>Data</span><span>Ess.</span><span></span>
           </div>
           <div class="tc-body" id="t-gastos"></div>
-          <div class="tc-total"><span>Total</span><span id="tot-gas">R$ 0,00</span></div>
+          <div class="tc-total"><span>Total</span><span id="tot-gas">Kz 0,00</span></div>
           <button class="add-btn" onclick="openModal('gasto')">＋ Adicionar gasto</button>
         </div>
 
@@ -132,7 +127,7 @@
             <span>Nome</span><span>Planejado</span><span>Valor</span><span>Data/Status</span><span></span>
           </div>
           <div class="tc-body" id="t-contas"></div>
-          <div class="tc-total"><span>Total pago</span><span id="tot-con">R$ 0,00</span></div>
+          <div class="tc-total"><span>Total pago</span><span id="tot-con">Kz 0,00</span></div>
           <button class="add-btn" onclick="openModal('conta')">＋ Adicionar conta</button>
         </div>
 
@@ -142,10 +137,37 @@
             <span>Nome</span><span>Tipo</span><span>Valor</span><span>Data</span><span></span>
           </div>
           <div class="tc-body" id="t-reservas"></div>
-          <div class="tc-total"><span>Total</span><span id="tot-res">R$ 0,00</span></div>
+          <div class="tc-total"><span>Total</span><span id="tot-res">Kz 0,00</span></div>
           <button class="add-btn" onclick="openModal('reserva')">＋ Adicionar reserva</button>
         </div>
       </div>
+
+      <!-- ══════════════ VISÃO ANUAL (COLAPSÁVEL, NO FINAL) ══════════════ -->
+      <details class="annual-details">
+        <summary class="annual-summary">
+          📅 Visão Anual & Evolução — <span id="annual-year"></span>
+          <span class="annual-toggle-hint">clique para expandir</span>
+        </summary>
+        <div class="annual-body">
+          <div class="row-annual">
+            <div class="card annual-card">
+              <div class="card-title">📅 Resumo por Mês — <span id="annual-year-2"></span></div>
+              <div class="annual-scroll">
+                <div id="annual-table"></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">📈 Evolução Mensal</div>
+              <div class="chart-wrap trend-wrap"><canvas id="trendChart"></canvas></div>
+              <div class="chart-legend">
+                <span class="cl-item"><span class="cl-dot" style="background:var(--green)"></span>Entradas</span>
+                <span class="cl-item"><span class="cl-dot" style="background:var(--red)"></span>Gastos</span>
+                <span class="cl-item"><span class="cl-dot" style="background:var(--t4)"></span>Reservas</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
 
     </div><!-- /.main -->
 
